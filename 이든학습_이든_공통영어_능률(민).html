@@ -1,0 +1,1151 @@
+<html lang="ko"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#f4f7f9">
+    <title>이든_영어_능률(민) 3,4과 단어 </title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        body { font-family: 'Pretendard', sans-serif; background-color: #e9ecef; margin: 0; padding: 0; display: flex; justify-content: center; align-items: flex-start; height: 100dvh; overflow: hidden; user-select: none; }
+        
+        /* 반응형 컨테이너 (모바일~PC 자연스러운 대응) */
+        .app-container { width: 100%; max-width: 900px; height: 100dvh; background-color: #f4f7f9; display: flex; flex-direction: column; box-shadow: 0 0 25px rgba(0,0,0,0.15); overflow-y: auto; overflow-x: hidden; position: relative; transition: all 0.3s ease; }
+
+        /* 상단 패널 */
+        .top-panel { background: white; padding: 12px 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); z-index: 10; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; align-items: center;}
+        .control-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 850px;}
+        .control-row select { flex: 1; min-width: 90px; padding: 6px 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; font-weight: bold; color: #222; }
+        
+        .lang-options { display: flex; justify-content: center; gap: 12px; font-size: 14px; font-weight: 800; color: #1a5f7a; white-space: nowrap; flex: 1; min-width: 140px;}
+        .lang-options label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .lang-options input[type="radio"] { transform: scale(1.3); margin-right: 4px; }
+        
+        .panel-btns { display: flex; justify-content: center; gap: 8px; flex: 1; min-width: 140px;}
+        .btn-panel { flex: 1; background: #95a5a6; color: white; border: none; padding: 8px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; line-height: 1.3; font-size: 13px; white-space: nowrap; transition: 0.2s;}
+        .btn-panel:active { transform: scale(0.95); }
+        .btn-panel.primary { background: #3498db; }
+        .btn-panel.upload { background: #8e44ad; } 
+        
+        /* 상단 결과 전송 버튼 추가 스타일 */
+        .btn-submit-top { background: #e67e22 !important; border: 1px solid #d35400; animation: pulse 2s infinite; }
+
+        /* 상태 정보 */
+        .status-header { padding: 12px 20px; display: flex; flex-direction: column; width: 100%; box-sizing: border-box; gap: 10px; flex-shrink: 0;}
+        .mode-title { font-size: 18px; font-weight: 900; color: #222; text-align: center; margin: 0; }
+        .status-info-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .badge-group { display: flex; gap: 8px; align-items: center; }
+        
+        .progress-badge { font-size: 14px; font-weight: 800; padding: 6px 12px; border-radius: 15px; white-space: nowrap; transition: all 0.3s ease; }
+        .badge-default { background: #e8f4fd; color: #3498db; }
+        
+        /* 2차 학습 회독 뱃지 강조 (가독성 및 시각적 균형) */
+        .badge-cycle-1, .badge-cycle-2, .badge-cycle-3 {
+            font-size: 18px !important;
+            font-weight: 900 !important;
+            padding: 8px 20px !important;
+            border-radius: 30px !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+            border: 2px solid #ffffff;
+            letter-spacing: 1px;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .badge-cycle-1 { background: #3b82f6 !important; } 
+        .badge-cycle-2 { background: #8b5cf6 !important; } 
+        .badge-cycle-3 { background: #ef4444 !important; } 
+        .badge-cycle-4 { background: #1e293b !important; color: #fff !important; font-size: 16px !important; } 
+
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        .stopwatch-badge { font-size: 16px; font-weight: 900; background: #fff3e0; color: #d35400; padding: 6px 14px; border-radius: 15px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.05); letter-spacing: 1px; white-space: nowrap;}
+
+        /* 대시보드 */
+        .dashboard { display: flex; justify-content: space-between; gap: 8px; width: 92%; max-width: 850px; margin: 0 auto 10px auto; flex-shrink: 0;}
+        .box-status { flex: 1; background: white; padding: 8px 0; border-radius: 10px; text-align: center; font-size: 13px; font-weight: bold; box-shadow: 0 1px 5px rgba(0,0,0,0.06); transition: all 0.2s ease;}
+        .box-left { color: #ff5252; border-bottom: 4px solid #ff5252; }
+        .box-mid { color: #f39c12; border-bottom: 4px solid #f39c12; }
+        .box-right { color: #2ed573; border-bottom: 4px solid #2ed573; }
+
+        .timer-container { width: 92%; max-width: 850px; height: 5px; background-color: #ddd; border-radius: 3px; overflow: hidden; display: none; margin: 0 auto 10px auto; flex-shrink: 0;}
+        .timer-bar { height: 100%; width: 100%; background-color: #ff4d4d; }
+
+        /* === 카드 영역 === */
+        .main-area-wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 10px 15px; box-sizing: border-box; position: relative; min-height: 280px;}
+        .main-area { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; perspective: 1000px; }
+        
+        /* 카드 너비 최적화 (PC에서도 지나치게 커지지 않도록) */
+        .swipe-wrapper { width: 95%; max-width: 550px; cursor: grab; position: relative; z-index: 5; touch-action: none; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s; margin: 0 auto; }
+        .swipe-wrapper:active { cursor: grabbing; }
+        
+        .card { width: 100%; aspect-ratio: 1.2 / 1.0; max-height: 55dvh; position: relative; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s, border 0.3s; transform-style: preserve-3d; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); border: 2px solid transparent; background: white; }
+        .card.is-flipped { transform: rotateY(180deg); }
+        
+        .cycle-1 .card { border-color: #3498db; box-shadow: 0 10px 30px rgba(52, 152, 219, 0.25); }
+        .cycle-2 .card { border-color: #9b59b6; box-shadow: 0 10px 30px rgba(155, 89, 182, 0.25); }
+        .cycle-3 .card { border-color: #e74c3c; box-shadow: 0 10px 30px rgba(231, 76, 60, 0.25); }
+        .cycle-4 .card { border-color: #2c3e50; box-shadow: 0 10px 30px rgba(44, 62, 80, 0.25); }
+
+        .card-face { width: 100%; height: 100%; position: absolute; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 18px; background: white; padding: 20px; box-sizing: border-box; text-align: center; }
+        .card-back { transform: rotateY(180deg); background-color: #f0f8ff; }
+        
+        .text-container { width: 100%; height: 75%; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 10px; box-sizing: border-box; word-break: keep-all; gap: 8px;}
+        .word-text { font-weight: 800; line-height: 1.3; transition: font-size 0.1s ease; text-align: center; width: 100%; margin: 0;}
+
+        .guide-text { font-size: 13px; color: #bbb; position: absolute; bottom: 15px; transition: 0.3s; }
+        .academy-logo { margin-top: 15px; font-size: 15px; font-weight: 900; color: #b2bec3; letter-spacing: 2px; text-align: center; flex-shrink: 0; padding-bottom: 10px;}
+
+        .swipe-info-guide { width: 100%; text-align: center; padding: 12px 0; background: #fff; border-top: 1px solid #eee; display: flex; justify-content: space-around; font-size: 13px; font-weight: bold; flex-shrink: 0;}
+        .guide-item { display: flex; flex-direction: column; gap: 4px; }
+
+        /* === 모달 === */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; background: rgba(0,0,0,0.75); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-content { background: white; padding: 25px; border-radius: 20px; width: 85%; max-width: 460px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); max-height: 90dvh; display: flex; flex-direction: column; overflow-y: auto;}
+        
+        .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .input-group input { padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 15px; text-align: center; font-family: 'Pretendard'; }
+        
+        .btn-main { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; font-size: 15px; color: white; transition: 0.2s; flex-shrink: 0;}
+        .btn-blue { background: #3498db; }
+        .btn-orange { background: #f39c12; }
+        .btn-green { background: #2ed573; }
+        .btn-gray { background: #95a5a6; margin-top: 10px;}
+        .btn-dark { background: #34495e; }
+        .btn-submit { background: #e67e22; border: 2px solid #d35400; box-shadow: 0 4px 10px rgba(211,84,0,0.3); animation: pulse 2s infinite; margin-top: 10px;}
+        .btn-admin { background: #8e44ad; } 
+        .btn-danger { background-color: #e74c3c !important; color: #ffffff !important; margin-top: 10px;}
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        
+        .hidden { display: none !important; }
+        .textbook-title { font-size: 20px; font-weight: 900; color: #1a5f7a; margin-bottom: 15px; background: #e8f4fd; padding: 10px; border-radius: 10px; }
+
+        .table-responsive { width: 100%; overflow-x: auto; margin-bottom: 15px; flex: 1; min-height: 200px; border-radius: 8px; border: 1px solid #eee;}
+        .history-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: center; white-space: nowrap; }
+        .history-table th, .history-table td { border: 1px solid #ddd; padding: 10px 5px; vertical-align: middle; }
+        .history-table th { background: #fdf2e9; color: #333; font-weight: bold; position: sticky; top: 0; font-size: 13px; z-index: 2;}
+        .history-table td { color: #555; }
+        .wrong-words-cell { max-height: 80px; overflow-y: auto; display: block; text-align: left; font-size: 11px; line-height: 1.4; padding: 6px; background: #fffcfc;}
+
+        /* PC, 태블릿 완벽 대응 반응형 미디어 쿼리 추가 */
+        @media (min-width: 768px) {
+            body { background-color: #cbd5e1; align-items: center; } 
+            .app-container { max-width: 1000px; height: 96dvh; margin-top: 2dvh; border-radius: 20px; box-shadow: 0 10px 50px rgba(0,0,0,0.3); }
+            .top-panel, .status-header, .dashboard, .timer-container { padding: 15px 30px; }
+            .control-row select { font-size: 15px; padding: 8px 12px; }
+            .btn-panel { font-size: 14px; padding: 10px 14px; }
+            .mode-title { font-size: 24px; }
+            .box-status { font-size: 16px; padding: 15px 0; }
+            .swipe-info-guide { padding: 15px 0; font-size: 15px; }
+            .card { max-height: 60dvh; } 
+            .academy-logo { font-size: 14px; padding-bottom: 20px; }
+        }
+        @media (max-height: 650px), (orientation: landscape) {
+            .top-panel { padding: 8px 10px; gap: 6px; }
+            .control-row select { padding: 4px 6px; font-size: 12px; }
+            .card { max-height: 50dvh; } 
+        }
+    </style>
+</head>
+<body>
+
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+<div class="app-container">
+    <input type="file" id="csvFileInput" accept=".csv" onchange="handleCsvUpload(event)" style="display:none;">
+
+    <div id="modalOverlay" class="modal-overlay" style="display: flex;">
+        
+        <div id="adminModal" class="modal-content">
+            <h2 style="color:#8e44ad; margin-top:0;">Master 관리자 모드</h2>
+            <p style="font-size: 14px; color: #666;">배포할 교재 이름과 CSV를 넣어주세요.</p>
+            <input type="text" id="adminBookName" placeholder="교재 제목 입력 (예: 워드마스터 1-10)" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #8e44ad; margin-bottom: 15px; text-align: center; box-sizing: border-box;">
+            <button class="btn-main btn-admin" onclick="triggerCsvUpload()">1. CSV 단어장 업로드</button>
+            <button class="btn-main btn-blue" id="genFileBtn" onclick="generateStudentFile()" style="opacity: 1;">2. 학생용 파일 제작 &amp; 다운로드</button>
+            <p id="uploadStatus" style="font-size: 12px; color: #e74c3c; margin-top: 10px;">파일을 업로드하면 버튼이 활성화됩니다.</p>
+        </div>
+
+        <div id="startModal" class="modal-content hidden">
+            <div id="studentBookTitle" class="textbook-title">교재명이 표시됩니다</div>
+            
+            <div id="loginSection">
+                <div class="input-group">
+                    <input type="number" id="seatInput" placeholder="좌석번호" min="1" max="99">
+                    <input type="text" id="nameInput" placeholder="학생 이름 (예: 권다은)">
+                    <input type="password" id="pwInput" placeholder="시트 비밀번호 (예: 129200)">
+                </div>
+                <button id="loginBtn" class="btn-main btn-blue" onclick="performLogin()">로그인하여 시작하기</button>
+            </div>
+
+            <div id="menuSection" class="hidden">
+                <div style="background:#fdf2e9; padding:15px; border-radius:12px; margin-bottom:15px; text-align:left; font-size:14px; font-weight: bold; color: #1a5f7a;">
+                    <label style="display: flex; align-items: center; margin-bottom: 8px;"><input type="radio" name="modalLang" value="en2ko" checked="" style="transform: scale(1.4); margin-right: 8px;"> 영어 ➔ 한글 연습</label>
+                    <label style="display: flex; align-items: center;"><input type="radio" name="modalLang" value="ko2en" style="transform: scale(1.4); margin-right: 8px;"> 한글 ➔ 영어 연습</label>
+                </div>
+                
+                <div id="authBtnGroup" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <button class="btn-main btn-blue" style="margin:0; font-size:14px; padding:15px 5px;" onclick="initApp(1, true)">1차 (단어 익히기)</button>
+                    <button class="btn-main btn-orange" style="margin:0; font-size:14px; padding:15px 5px;" onclick="initApp(2, true)">2차 (박스 분류)</button>
+                    <button class="btn-main btn-green" style="margin:0; font-size:14px; padding:15px 5px;" onclick="initApp(3, true)">3차 (3초 테스트)</button>
+                    <button class="btn-main btn-dark" style="margin:0; font-size:14px; padding:15px 5px;" onclick="startMode4()">4차 (오답 복습)</button>
+                </div>
+                
+                <div style="display:flex; flex-direction:column; gap: 10px; margin-top: 20px;">
+                    <button class="btn-main btn-submit" style="margin:0; padding:16px; font-size:16px;" onclick="sendDataToGoogleForm()">📊 학습 결과 원장님께 전송하기</button>
+                    <button class="btn-main" style="background:#2c3e50; margin:0; padding:12px; font-size:14px;" onclick="showGuideModal()">📱 홈 화면에 앱 만들기 (가이드)</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="guideModal" class="modal-content hidden">
+            <h2 style="color:#2c3e50; margin-top:0; font-size: 22px;">📱 바탕화면 바로가기 만들기</h2>
+            <div style="text-align: left; font-size: 14px; color: #333; line-height: 1.6; background:#f4f7f9; padding:15px; border-radius:12px; margin-bottom:15px;">
+                <p style="margin-top:0;">매번 카톡에서 열 필요 없이 바탕화면에 <b>바로가기 아이콘</b>을 설치할 수 있습니다.</p>
+                <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
+                <p style="color:#1a5f7a; font-weight:bold;">🍎 아이폰 (Safari) 사용자</p>
+                <p style="margin:5px 0 10px 0;">1. 화면 하단의 <b>[공유하기(네모와 화살표)]</b> 아이콘 클릭<br>
+                2. 메뉴를 위로 올려 <b>[홈 화면에 추가]</b> 클릭</p>
+                
+                <p style="color:#1a5f7a; font-weight:bold;">🤖 안드로이드 (Chrome) 사용자</p>
+                <p style="margin:5px 0 0 0;">1. 화면 우측 상단의 <b>[점 3개(⋮)]</b> 메뉴 클릭<br>
+                2. <b>[홈 화면에 추가]</b> 클릭</p>
+            </div>
+            <button class="btn-main btn-gray" onclick="closeGuideModal()">뒤로 가기</button>
+        </div>
+
+        <div id="resultModal" class="modal-content hidden">
+            <h2 id="resultTitle" style="font-size: 24px;">단계 완료!</h2>
+            <div style="display: flex; justify-content: space-around; margin: 15px 0; font-weight: bold; font-size: 15px;">
+                <div style="color:#ff5252;">좌 <br><span id="resLeft" style="font-size:22px;">0</span></div>
+                <div style="color:#f39c12;">중 <br><span id="resMid" style="font-size:22px;">0</span></div>
+                <div style="color:#2ed573;">우 <br><span id="resRight" style="font-size:22px;">0</span></div>
+            </div>
+            <p id="resultMsg" style="font-size:15px; color:#666; margin:10px 0 20px 0; line-height:1.5; font-weight: bold;"></p>
+            
+            <button class="btn-main btn-submit" onclick="sendDataToGoogleForm()">📊 학습 결과 전송하기</button>
+            <div id="resultActionBtns" style="display:flex; flex-direction:column; gap:8px; margin-top: 10px;"></div>
+        </div>
+
+        <div id="historyModal" class="modal-content hidden">
+            <h2 style="color:#333; margin-bottom: 15px; font-size: 22px;">내 학습 기록</h2>
+            <div class="table-responsive">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th style="min-width:60px;">단원/일시</th>
+                            <th>1차</th>
+                            <th>2차</th>
+                            <th>3차</th>
+                            <th>4차</th>
+                            <th style="min-width:50px;">총시간</th>
+                            <th style="min-width:110px;">3/4차 오답<br>(단어|뜻)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyList"></tbody>
+                </table>
+            </div>
+            
+            <button class="btn-main btn-submit" onclick="sendDataToGoogleForm()" style="width: 90%; margin: 0 auto 10px;">📊 현재 기록 원장님께 전송하기</button>
+            <button class="btn-main btn-export" style="width: 90%; margin: 0 auto 10px; background:#34495e;" onclick="exportToCSV()">엑셀(CSV) 백업 다운로드</button>
+            <div style="display: flex; gap: 10px; width: 90%; margin: 0 auto;">
+                <button class="btn-main btn-danger" onclick="clearAllHistory()">기록 초기화</button>
+                <button class="btn-main btn-gray" onclick="closeHistory()">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-panel">
+        <div class="control-row">
+            <select id="chapterSelect" onchange="handleChapterChange(event)"><option value="03_1단원">03_1단원</option><option value="03_2단원">03_2단원</option><option value="03_3단원">03_3단원</option><option value="04_1 단원">04_1 단원</option><option value="04_2 단원">04_2 단원</option><option value="04_3 단원">04_3 단원</option></select>
+            <select id="fontSizeLevel" onchange="updateUI()">
+                <option value="0.7">소</option>
+                <option value="0.9">중</option>
+                <option value="1.1" selected="">대 (기본)</option>
+                <option value="1.4">특대</option>
+                <option value="1.7">초대</option>
+            </select>
+            <button class="btn-panel upload" id="btnUpload" onclick="triggerCsvUpload()">업로드</button>
+        </div>
+        <div class="control-row">
+            <div class="lang-options">
+                <label><input type="radio" name="topLang" value="en2ko" onchange="syncLangAndUpdate()" checked=""> 영➔한</label>
+                <label><input type="radio" name="topLang" value="ko2en" onchange="syncLangAndUpdate()"> 한➔영</label>
+            </div>
+            <div class="panel-btns">
+                <button class="btn-panel btn-submit-top" onclick="sendDataToGoogleForm()">결과전송</button>
+                <button class="btn-panel" onclick="showHistory()">기록보기</button>
+                <button class="btn-panel primary" onclick="showStartModal()">처음으로</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-header">
+        <div class="mode-title" id="modeTitle">모드 선택</div>
+        <div class="status-info-row">
+            <div class="badge-group">
+                <div class="progress-badge badge-default" id="cycleBadge" style="display: none;">1회독</div>
+                <div class="progress-badge badge-default" id="progressText">0 / 0</div>
+            </div>
+            <div class="stopwatch-badge" id="stopwatchDisplay" style="display:block;">⏱ 00:00</div>
+        </div>
+    </div>
+    
+    <div class="timer-container" id="timerContainer"><div class="timer-bar" id="timerBar"></div></div>
+    
+    <div class="dashboard" id="mainDash">
+        <div class="box-status box-left">모름 <span id="cntLeft">0</span></div>
+        <div class="box-status box-mid">지연 <span id="cntMid">0</span></div>
+        <div class="box-status box-right">완벽 <span id="cntRight">0</span></div>
+    </div>
+
+    <div class="main-area-wrapper">
+        <div class="main-area" id="mainArea">
+            <div class="swipe-wrapper" id="swipeWrapper">
+                <div class="card" id="wordCard">
+                    <div class="card-face" id="cardFront"><div class="text-container" id="frontText"></div><div class="guide-text" id="frontGuide">터치하여 확인</div></div>
+                    <div class="card-face card-back"><div class="text-container" id="backText"></div><div class="guide-text" id="backGuide">밀어서 분류하세요</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="academy-logo">미사이든학원</div>
+    </div>
+    
+    <div class="swipe-info-guide" id="swipeInfoGuide">
+        <div class="guide-item" style="color:#ff5252;"><span>←</span><span>모름 / 틀림</span></div>
+        <div class="guide-item" style="color:#f39c12;"><span>↑</span><span>1~3초 걸림</span></div>
+        <div class="guide-item" style="color:#2ed573;"><span>→</span><span>0.5초 컷!</span></div>
+    </div>
+</div>
+
+<script>
+    /* =======================================================
+       🌟 환경 변수 및 설정 (영어 3열 파싱, 인증 유지)
+       ======================================================= */
+    const EMBEDDED_DATA = [{"chapter":"03_1단원","word":"topic","meaning":"n. 주제"},{"chapter":"03_1단원","word":"curious","meaning":"a. 궁금한"},{"chapter":"03_1단원","word":"prevent","meaning":"v. 예방하다, 막다"},{"chapter":"03_1단원","word":"disease","meaning":"n. 질병"},{"chapter":"03_1단원","word":"weak","meaning":"a. 약한"},{"chapter":"03_1단원","word":"practice","meaning":"v. 연습하다"},{"chapter":"03_1단원","word":"fight against ~","meaning":"~에 맞서 싸우다"},{"chapter":"03_1단원","word":"immune system","meaning":"n. 면역 체계"},{"chapter":"03_1단원","word":"fascinating","meaning":"a. 대단히 흥미로운"},{"chapter":"03_1단원","word":"recommend","meaning":"v. 추천하다, 권장하다"},{"chapter":"03_1단원","word":"eye drops","meaning":"n. 안약"},{"chapter":"03_1단원","word":"side effect","meaning":"n. 부작용"},{"chapter":"03_1단원","word":"redness","meaning":"n. 붉기, 붉은 기"},{"chapter":"03_1단원","word":"apply","meaning":"v. (크림 등을) 바르다"},{"chapter":"03_1단원","word":"swelling","meaning":"n. 부기, 부어오름"},{"chapter":"03_1단원","word":"dizzy","meaning":"a. 어지러운"},{"chapter":"03_1단원","word":"drink","meaning":"v. 마시다; n. 음료"},{"chapter":"03_1단원","word":"be aware of ~","meaning":"~을 알다"},{"chapter":"03_1단원","word":"daily","meaning":"a. 하루의, 일일의"},{"chapter":"03_1단원","word":"amount","meaning":"n. 양, 총액"},{"chapter":"03_1단원","word":"per","meaning":"prep. ~당[마다]"},{"chapter":"03_1단원","word":"body weight","meaning":"n. 몸무게"},{"chapter":"03_1단원","word":"contain","meaning":"v. ~이 함유되어 있다"},{"chapter":"03_1단원","word":"realize","meaning":"v. 깨닫다"},{"chapter":"03_1단원","word":"cut down on ~","meaning":"~를 줄이다"},{"chapter":"03_1단원","word":"nutrient","meaning":"n. 영양소"},{"chapter":"03_1단원","word":"ingredient","meaning":"n. 재료, 성분"},{"chapter":"03_1단원","word":"dietary fiber","meaning":"식이 섬유"},{"chapter":"03_1단원","word":"steam","meaning":"v. (음식을) 찌다"},{"chapter":"03_1단원","word":"boil","meaning":"v. 삶다"},{"chapter":"03_1단원","word":"unpeeled","meaning":"a. 껍질을 벗기지 않은"},{"chapter":"03_1단원","word":"preserve","meaning":"v. 보존하다"},{"chapter":"03_1단원","word":"host","meaning":"n. 진행자"},{"chapter":"03_1단원","word":"exercise","meaning":"n. 운동; v. 운동하다"},{"chapter":"03_1단원","word":"share","meaning":"v. (생각 등을) 공유하다"},{"chapter":"03_1단원","word":"useful","meaning":"a. 유용한"},{"chapter":"03_1단원","word":"tip","meaning":"n. 조언"},{"chapter":"03_1단원","word":"start with ~","meaning":"~로 시작하다"},{"chapter":"03_2단원","word":"experience","meaning":"n. 경험"},{"chapter":"03_2단원","word":"last","meaning":"a. 지난"},{"chapter":"03_2단원","word":"work out","meaning":"운동하다"},{"chapter":"03_2단원","word":"right after ~","meaning":"~ 바로 후에, ~ 직후에"},{"chapter":"03_2단원","word":"stomachache","meaning":"n. 복통"},{"chapter":"03_2단원","word":"happen","meaning":"v. 일어나다"},{"chapter":"03_2단원","word":"soon","meaning":"adv. 빨리"},{"chapter":"03_2단원","word":"cause","meaning":"v. 초래하다"},{"chapter":"03_2단원","word":"various","meaning":"a. 다양한"},{"chapter":"03_2단원","word":"stomach","meaning":"n. 위, 위장, 배"},{"chapter":"03_2단원","word":"issue","meaning":"n. 문제"},{"chapter":"03_2단원","word":"blood","meaning":"n. 혈액"},{"chapter":"03_2단원","word":"rush","meaning":"v. 급(속)히 움직이다"},{"chapter":"03_2단원","word":"digestive","meaning":"a. 소화의"},{"chapter":"03_2단원","word":"break ~ down (into …)","meaning":"~을 (…로) 분해하다"},{"chapter":"03_2단원","word":"absorb","meaning":"v. 흡수하다"},{"chapter":"03_2단원","word":"nutrient","meaning":"n. 영양소"},{"chapter":"03_2단원","word":"muscle","meaning":"n. 근육"},{"chapter":"03_2단원","word":"supply A with B","meaning":"A에게 B를 공급하다"},{"chapter":"03_2단원","word":"oxygen","meaning":"n. 산소"},{"chapter":"03_2단원","word":"require","meaning":"v. 필요로 하다"},{"chapter":"03_2단원","word":"process","meaning":"n. 과정"},{"chapter":"03_2단원","word":"pause","meaning":"v. 잠시 멈추게 하다"},{"chapter":"03_2단원","word":"return","meaning":"v. 돌아오다"},{"chapter":"03_2단원","word":"whether A or B","meaning":"A이든 B이든 상관없이"},{"chapter":"03_2단원","word":"lift","meaning":"v. 들다, 들어 올리다"},{"chapter":"03_2단원","word":"weight","meaning":"n. 역기"},{"chapter":"03_2단원","word":"go for a jog","meaning":"조깅을 하러 가다"},{"chapter":"03_2단원","word":"full of ~","meaning":"~로 가득한"},{"chapter":"03_2단원","word":"make sense","meaning":"타당하다, 말이 되다"},{"chapter":"03_2단원","word":"on an empty stomach","meaning":"빈속에, 공복에"},{"chapter":"03_2단원","word":"harmful","meaning":"a. 해로운"},{"chapter":"03_2단원","word":"unpleasant","meaning":"a. 불쾌한"},{"chapter":"03_2단원","word":"fuel","meaning":"n. 연료"},{"chapter":"03_2단원","word":"provide","meaning":"v. 제공하다"},{"chapter":"03_2단원","word":"carbohydrate","meaning":"n. 탄수화물"},{"chapter":"03_2단원","word":"store","meaning":"v. 저장하다"},{"chapter":"03_2단원","word":"liver","meaning":"n. 간"},{"chapter":"03_2단원","word":"completely","meaning":"adv. 완전히, 전적으로"},{"chapter":"03_2단원","word":"wake up","meaning":"깨어나다, 일어나다"},{"chapter":"03_2단원","word":"challenge","meaning":"n. 힘든[어려운] 일"},{"chapter":"03_2단원","word":"blood sugar level","meaning":"혈당 수치"},{"chapter":"03_3단원","word":"low","meaning":"a. 낮은"},{"chapter":"03_3단원","word":"lack","meaning":"v. ~가 부족하다; 부족"},{"chapter":"03_3단원","word":"unusually","meaning":"adv. 대단히, 유난히, 비정상적으로"},{"chapter":"03_3단원","word":"serious","meaning":"a. 심각한"},{"chapter":"03_3단원","word":"outcome","meaning":"n. 결과"},{"chapter":"03_3단원","word":"end up -ing","meaning":"결국 -하다"},{"chapter":"03_3단원","word":"suffer from ~","meaning":"~로 고통받다"},{"chapter":"03_3단원","word":"nausea","meaning":"n. 메스꺼움"},{"chapter":"03_3단원","word":"faint","meaning":"v. 실신하다"},{"chapter":"03_3단원","word":"intense","meaning":"a. 강렬한, 심한"},{"chapter":"03_3단원","word":"use ~ up","meaning":"~를 다 써 버리다"},{"chapter":"03_3단원","word":"loss","meaning":"n. 손실"},{"chapter":"03_3단원","word":"recommend","meaning":"v. 권고하다"},{"chapter":"03_3단원","word":"contain","meaning":"v. ~이 함유되어 있다"},{"chapter":"03_3단원","word":"within","meaning":"~ 이내에"},{"chapter":"03_3단원","word":"replace","meaning":"v. 대신[대체]하다"},{"chapter":"03_3단원","word":"basically","meaning":"adv. 기본적으로"},{"chapter":"03_3단원","word":"weigh","meaning":"v. 무게가 ~이다"},{"chapter":"03_3단원","word":"consume","meaning":"v. 먹다, 섭취하다"},{"chapter":"03_3단원","word":"equal to ~","meaning":"~와 동등한"},{"chapter":"03_3단원","word":"bowl","meaning":"n. 사발, 그릇"},{"chapter":"03_3단원","word":"explain","meaning":"v. 설명하다"},{"chapter":"03_3단원","word":"discomfort","meaning":"n. 불편함"},{"chapter":"03_3단원","word":"vary","meaning":"v. 서로[각기] 다르다"},{"chapter":"03_3단원","word":"depend on ~","meaning":"~에 달려 있다, ~에 의해 결정되다"},{"chapter":"03_3단원","word":"several","meaning":"a. 몇몇의 ~, 여러 ~"},{"chapter":"03_3단원","word":"factor","meaning":"n. 요인"},{"chapter":"03_3단원","word":"gender","meaning":"n. 성별"},{"chapter":"03_3단원","word":"matter","meaning":"v. 중요하다"},{"chapter":"03_3단원","word":"extremely","meaning":"adv. 극도로, 대단히"},{"chapter":"03_3단원","word":"active","meaning":"a. 활동적인"},{"chapter":"03_3단원","word":"suggest","meaning":"v. 제안하다"},{"chapter":"03_3단원","word":"moderate","meaning":"a. 중간의, 보통의"},{"chapter":"03_3단원","word":"casual","meaning":"a. 일상적인, 평상시의"},{"chapter":"03_3단원","word":"sure","meaning":"a. 확신하는"},{"chapter":"03_3단원","word":"helpful","meaning":"a. 도움이 되는"},{"chapter":"03_3단원","word":"viewer","meaning":"n. 시청자"},{"chapter":"04_1 단원","word":"general","meaning":"n. 장군"},{"chapter":"04_1 단원","word":"install","meaning":"v. 설치하다"},{"chapter":"04_1 단원","word":"application","meaning":"n. 응용 프로그램, 애플리케이션"},{"chapter":"04_1 단원","word":"historical","meaning":"a. 역사적인"},{"chapter":"04_1 단원","word":"figure","meaning":"n. 인물"},{"chapter":"04_1 단원","word":"look forward to -ing","meaning":"-하기를 고대하다"},{"chapter":"04_1 단원","word":"battle","meaning":"n. 전투"},{"chapter":"04_1 단원","word":"technology","meaning":"n. 기술"},{"chapter":"04_1 단원","word":"fair","meaning":"n. 박람회"},{"chapter":"04_1 단원","word":"restore","meaning":"v. 복원하다"},{"chapter":"04_1 단원","word":"convert A into B","meaning":"A를 B로 전환시키다"},{"chapter":"04_1 단원","word":"fire drill","meaning":"n. 소방[화재 대피] 훈련"},{"chapter":"04_1 단원","word":"train","meaning":"v. 훈련시키다"},{"chapter":"04_1 단원","word":"virtual reality","meaning":"n. 가상현실"},{"chapter":"04_1 단원","word":"explain","meaning":"v. 설명하다"},{"chapter":"04_1 단원","word":"equipment","meaning":"n. 장비"},{"chapter":"04_1 단원","word":"fire extinguisher","meaning":"n. 소화기"},{"chapter":"04_1 단원","word":"danger","meaning":"n. 위험"},{"chapter":"04_1 단원","word":"safely","meaning":"adv. 안전하게"},{"chapter":"04_1 단원","word":"practice","meaning":"v. 연습하다"},{"chapter":"04_1 단원","word":"device","meaning":"n. 장치"},{"chapter":"04_1 단원","word":"monitor","meaning":"n. 감시 장치, 모니터"},{"chapter":"04_1 단원","word":"detect","meaning":"v. 감지하다"},{"chapter":"04_1 단원","word":"automatically","meaning":"adv. 자동으로"},{"chapter":"04_1 단원","word":"emergency","meaning":"n. 비상(사태)"},{"chapter":"04_1 단원","word":"useful","meaning":"a. 유용한"},{"chapter":"04_1 단원","word":"average","meaning":"a. 보통의, 일반적인"},{"chapter":"04_1 단원","word":"item","meaning":"n. 물건"},{"chapter":"04_1 단원","word":"space","meaning":"n. 우주"},{"chapter":"04_1 단원","word":"sensor","meaning":"n. 센서, 감지기"},{"chapter":"04_1 단원","word":"modern","meaning":"a. 현대의"},{"chapter":"04_1 단원","word":"originally","meaning":"adv. 원래"},{"chapter":"04_1 단원","word":"develop","meaning":"v. 개발하다"},{"chapter":"04_1 단원","word":"produce","meaning":"v. 생산하다"},{"chapter":"04_1 단원","word":"require","meaning":"v. 필요로 하다"},{"chapter":"04_1 단원","word":"commercial","meaning":"a. 상업적인"},{"chapter":"04_1 단원","word":"product","meaning":"n. 제품"},{"chapter":"04_1 단원","word":"freeze-dried","meaning":"a. 냉동 건조된"},{"chapter":"04_1 단원","word":"long-lasting","meaning":"a. 오래 지속되는"},{"chapter":"04_1 단원","word":"local","meaning":"a. 지역의"},{"chapter":"04_2 단원","word":"benefit","meaning":"v. ~에 이익을 주다"},{"chapter":"04_2 단원","word":"common","meaning":"a. 흔한"},{"chapter":"04_2 단원","word":"recently","meaning":"adv. 최근에"},{"chapter":"04_2 단원","word":"artist","meaning":"n. 화가"},{"chapter":"04_2 단원","word":"artificial intelligence (AI)","meaning":"n. 인공 지능"},{"chapter":"04_2 단원","word":"contest","meaning":"n. 대회"},{"chapter":"04_2 단원","word":"win (the) first place","meaning":"1등을 하다"},{"chapter":"04_2 단원","word":"category","meaning":"n. 범주, 부문"},{"chapter":"04_2 단원","word":"lead to ~","meaning":"~로 이어지다"},{"chapter":"04_2 단원","word":"controversy","meaning":"n. 논란"},{"chapter":"04_2 단원","word":"community","meaning":"n. (직업·종교 등이 같은 사람들의) 공동체, ~계"},{"chapter":"04_2 단원","word":"complain","meaning":"v. 불평하다"},{"chapter":"04_2 단원","word":"provide A with B","meaning":"A에게 B를 제공하다"},{"chapter":"04_2 단원","word":"basic","meaning":"a. 기본적인"},{"chapter":"04_2 단원","word":"instruction","meaning":"n. 지시, 설명"},{"chapter":"04_2 단원","word":"fair to ~","meaning":"~에게 공평한[공정한]"},{"chapter":"04_2 단원","word":"rest","meaning":"n. (어떤 것의) 나머지"},{"chapter":"04_2 단원","word":"excited","meaning":"a. 신난, 들뜬"},{"chapter":"04_2 단원","word":"potential","meaning":"n. 잠재력"},{"chapter":"04_2 단원","word":"numerous","meaning":"a. 수많은"},{"chapter":"04_2 단원","word":"various","meaning":"a. 다양한"},{"chapter":"04_2 단원","word":"form","meaning":"n. 형태"},{"chapter":"04_2 단원","word":"novel","meaning":"n. 소설"},{"chapter":"04_2 단원","word":"generator","meaning":"n. 생성기, 발생기"},{"chapter":"04_2 단원","word":"based on ~","meaning":"~에 기반을 둔"},{"chapter":"04_2 단원","word":"text","meaning":"n. 글, 텍스트"},{"chapter":"04_2 단원","word":"request","meaning":"n. 요청"},{"chapter":"04_2 단원","word":"copy","meaning":"v. 모방하다"},{"chapter":"04_2 단원","word":"ability","meaning":"n. 능력"},{"chapter":"04_2 단원","word":"analyze","meaning":"v. 분석하다"},{"chapter":"04_2 단원","word":"millions of ~","meaning":"수백만의 ~"},{"chapter":"04_2 단원","word":"corresponding","meaning":"a. 해당하는, 상응하는"},{"chapter":"04_2 단원","word":"description","meaning":"n. 설명, 서술, 묘사"},{"chapter":"04_2 단원","word":"landscape","meaning":"n. 풍경"},{"chapter":"04_2 단원","word":"mix","meaning":"v. 혼합하다"},{"chapter":"04_2 단원","word":"existing","meaning":"a. 기존의, 현존하는"},{"chapter":"04_2 단원","word":"upon request","meaning":"요청에 따라"},{"chapter":"04_2 단원","word":"blend","meaning":"v. 조합하다, 섞다"},{"chapter":"04_2 단원","word":"difference","meaning":"n. 차이점"},{"chapter":"04_2 단원","word":"overall","meaning":"adv. 확실히a. 전반적인"},{"chapter":"04_3 단원","word":"simple","meaning":"a. 간단한"},{"chapter":"04_3 단원","word":"complex","meaning":"a. 복잡한"},{"chapter":"04_3 단원","word":"detailed","meaning":"a. 세분화된, 상세한"},{"chapter":"04_3 단원","word":"not only A but also B","meaning":"A뿐만 아니라 B도"},{"chapter":"04_3 단원","word":"industry","meaning":"n. 산업"},{"chapter":"04_3 단원","word":"compose","meaning":"v. 작곡하다"},{"chapter":"04_3 단원","word":"option","meaning":"n. 선택[옵션]"},{"chapter":"04_3 단원","word":"key","meaning":"n. 음조"},{"chapter":"04_3 단원","word":"set","meaning":"v. 설정하다"},{"chapter":"04_3 단원","word":"enter","meaning":"v. 입력하다"},{"chapter":"04_3 단원","word":"edit","meaning":"v. 편집하다"},{"chapter":"04_3 단원","word":"as it is","meaning":"있는 그대로"},{"chapter":"04_3 단원","word":"computer-generated","meaning":"a. 컴퓨터로 생성된"},{"chapter":"04_3 단원","word":"imagery","meaning":"n. 형상, 이미지"},{"chapter":"04_3 단원","word":"known as ~","meaning":"~라고 알려진"},{"chapter":"04_3 단원","word":"open ~ up","meaning":"~를 열다"},{"chapter":"04_3 단원","word":"virtual","meaning":"a. 가상의"},{"chapter":"04_3 단원","word":"influencer","meaning":"n. (SNS상에서 팔로워가 많아) 영향력이 있는 사람, 인플루언서"},{"chapter":"04_3 단원","word":"extremely","meaning":"adv. 극도로, 매우"},{"chapter":"04_3 단원","word":"realistic","meaning":"a. 사실적인, 실제 그대로의"},{"chapter":"04_3 단원","word":"release","meaning":"v. 발매하다"},{"chapter":"04_3 단원","word":"realistically","meaning":"adv. 사실적으로"},{"chapter":"04_3 단원","word":"debate on[over] ~","meaning":"~에 관한 논쟁"},{"chapter":"04_3 단원","word":"open to ~","meaning":"~에 공개되어 있는"},{"chapter":"04_3 단원","word":"the public","meaning":"대중"},{"chapter":"04_3 단원","word":"conveniently","meaning":"adv. 편리하게"},{"chapter":"04_3 단원","word":"spark","meaning":"v. 촉발시키다"},{"chapter":"04_3 단원","word":"impact","meaning":"n. 영향"},{"chapter":"04_3 단원","word":"perform","meaning":"v. 수행하다"},{"chapter":"04_3 단원","word":"view A as B","meaning":"A를 B로 여기다"},{"chapter":"04_3 단원","word":"threat","meaning":"n. 위협"},{"chapter":"04_3 단원","word":"replace","meaning":"v. 대체하다"},{"chapter":"04_3 단원","word":"concern","meaning":"n. 걱정, 우려"},{"chapter":"04_3 단원","word":"imitate","meaning":"v. 모방하다"},{"chapter":"04_3 단원","word":"consent","meaning":"n. 동의"},{"chapter":"04_3 단원","word":"exceed","meaning":"v. 넘어서다"},{"chapter":"04_3 단원","word":"imagination","meaning":"n. 상상력, 창의력"},{"chapter":"04_3 단원","word":"dependent on ~","meaning":"~에 의존하는"},{"chapter":"04_3 단원","word":"assistance","meaning":"n. 도움"},{"chapter":"04_3 단원","word":"flaw","meaning":"n. 결함"},{"chapter":"04_3 단원","word":"limitation","meaning":"n. 한계"},{"chapter":"04_3 단원","word":"dependence on ~","meaning":"~에 대한 의존"},{"chapter":"04_3 단원","word":"imperfect","meaning":"a. 불완전한"},{"chapter":"04_3 단원","word":"diversity","meaning":"n. 다양성"},{"chapter":"04_3 단원","word":"eventually","meaning":"adv. 결국에, 결과적으로"},{"chapter":"04_3 단원","word":"limit","meaning":"n. 한계v. 제한하다;"},{"chapter":"04_3 단원","word":"output","meaning":"n. 결과(물)"},{"chapter":"04_3 단원","word":"boundary","meaning":"n. 경계, 한계"},{"chapter":"04_3 단원","word":"lie","meaning":"v. 있다"},{"chapter":"04_3 단원","word":"ahead of ~","meaning":"~의 앞에"},{"chapter":"04_3 단원","word":"boost","meaning":"v. 증진하다"},{"chapter":"04_3 단원","word":"productivity","meaning":"n. 생산성"},{"chapter":"04_3 단원","word":"grow tired of ~","meaning":"~에 지치게 되다"},{"chapter":"04_3 단원","word":"benefit","meaning":"n. 이점"},{"chapter":"04_3 단원","word":"opportunity","meaning":"n. 기회"},{"chapter":"04_3 단원","word":"figure ~ out","meaning":"~를 알아내다"},{"chapter":"04_3 단원","word":"ethically","meaning":"adv. 윤리적으로"},{"chapter":"04_3 단원","word":"collaborate","meaning":"v. 협력하다"}]; 
+    const EMBEDDED_BOOK_NAME = "이든_공통영어_능률(민)";
+    const IS_STUDENT_VERSION = true; 
+
+    // 인증용 구글 시트 URL (JSONP 우회 적용)
+    const AUTH_SHEET_ID = "17ARTCYwJFKBGhZmtsHnyGxLce4Jl5wd9dRmvZFMTJhs";
+
+    // 원장님 구글 폼 ID
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfqF1UuZXmZNsKr6i4y2LBxF8wIbychWIEDk7iXbb0JRezraA/formResponse";
+    const ENTRY_IDS = {
+        seat: "entry.569066082",      
+        name: "entry.497746211",       
+        chapter: "entry.1458418989",    
+        time1: "entry.208605908",      
+        time2: "entry.365892993",     
+        time3: "entry.615892699",     
+        time4: "entry.1840434640",     
+        wrongWords: "entry.1716399298"  
+    };
+
+    let submitted = false;
+    // iframe 로드 에러 방어
+    window.addEventListener('DOMContentLoaded', () => {
+        const iframe = document.getElementById('hidden_iframe');
+        if(iframe) {
+            iframe.onload = function() {
+                if (submitted) { alert('학습 결과가 원장님께 전송되었습니다.'); submitted = false; }
+            };
+        }
+    });
+
+    let originalWordData = EMBEDDED_DATA.length > 0 ? EMBEDDED_DATA : [{chapter:"기본단원", word:"upload_required", meaning:"자료를 업로드해주세요"}];
+    let textbookName = EMBEDDED_BOOK_NAME;
+
+    /* --- 상태 변수 --- */
+    let activeWordData = [], pendingQueue = [], boxes = { left: [], mid: [], right: [] };
+    let mode = 0, isEnToKo = true, currentWord = null, isFlipped = false, currentCycle = 1;
+    let currentSessionId = null, globalStopwatch, timer3Sec;
+    let sessionData = { time1: 0, time2: 0, time3: 0, time4: 0, p3Stats: { right: 0, mid: 0, left: 0 }, wrongWords: [] };
+    let isAnimating = false; 
+    let isLoggedIn = false; 
+
+    /* 스토리지 에러 방어용 데이터 불러오기 함수 */
+    function getSafeHistory() {
+        try {
+            let h = JSON.parse(localStorage.getItem('leitnerHistory'));
+            return Array.isArray(h) ? h : [];
+        } catch(e) {
+            return [];
+        }
+    }
+
+    /* --- 초기화 블록 --- */
+    window.onload = function() {
+        try {
+            if (IS_STUDENT_VERSION) {
+                document.getElementById('btnUpload').style.display = 'none';
+            }
+            if (localStorage.getItem('edenSeat')) {
+                document.getElementById('seatInput').value = localStorage.getItem('edenSeat');
+            }
+            if (localStorage.getItem('edenName')) {
+                document.getElementById('nameInput').value = localStorage.getItem('edenName');
+            }
+
+            showStartModal();
+            
+            document.body.addEventListener('touchstart', unlockAudio, {once:true});
+            document.body.addEventListener('click', unlockAudio, {once:true});
+        } catch(error) {
+            alert("시스템 초기화 중 오류가 발생하여 자동 복구합니다.");
+            localStorage.removeItem('leitnerHistory');
+            localStorage.removeItem('leitnerWrongWords');
+            location.reload();
+        }
+    };
+
+    /* --- 구글 시트 학생 인증 로직 (CORS 우회 JSONP) --- */
+    function fetchAuthData() {
+        return new Promise((resolve, reject) => {
+            const scriptId = 'google-sheet-jsonp';
+            let oldScript = document.getElementById(scriptId);
+            if (oldScript) oldScript.remove();
+
+            window.handleAuthResponse = function(response) {
+                resolve(response);
+                delete window.handleAuthResponse;
+            };
+
+            const script = document.createElement('script');
+            script.id = scriptId;
+            script.src = `https://docs.google.com/spreadsheets/d/${AUTH_SHEET_ID}/gviz/tq?tqx=responseHandler:handleAuthResponse`;
+            script.onerror = () => reject(new Error("Script loading failed"));
+            document.body.appendChild(script);
+            
+            setTimeout(() => reject(new Error("Timeout")), 10000);
+        });
+    }
+
+    /* 분리된 로그인 로직 */
+    async function performLogin() {
+        const name = document.getElementById('nameInput').value.trim();
+        const pw = document.getElementById('pwInput').value.trim();
+
+        if (!name || !pw) {
+            alert("이름과 비밀번호를 모두 입력해 주세요.");
+            return;
+        }
+
+        const loginBtn = document.getElementById('loginBtn');
+        const originalHtml = loginBtn.innerHTML;
+        loginBtn.innerHTML = "인증을 확인하는 중입니다...";
+        loginBtn.style.pointerEvents = "none";
+        loginBtn.style.opacity = "0.7";
+
+        try {
+            const response = await fetchAuthData();
+            let isAuthorized = false;
+
+            if (response && response.status === 'ok') {
+                const rows = response.table.rows;
+                for (let i = 0; i < rows.length; i++) {
+                    if (!rows[i] || !rows[i].c) continue;
+                    
+                    const cellName = rows[i].c[0]; 
+                    const cellPw = rows[i].c[1];   
+                    
+                    const rName = cellName && cellName.v != null ? String(cellName.v).trim() : "";
+                    const rPw = cellPw && cellPw.v != null ? String(cellPw.v).trim() : "";
+
+                    if (rName === name && rPw === pw) {
+                        isAuthorized = true;
+                        break;
+                    }
+                }
+            } else {
+                throw new Error("Invalid response format");
+            }
+
+            if (isAuthorized) {
+                isLoggedIn = true;
+                const seat = document.getElementById('seatInput').value.trim();
+                localStorage.setItem('edenSeat', seat);
+                localStorage.setItem('edenName', name);
+
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('menuSection').classList.remove('hidden');
+            } else {
+                alert("인증 실패! 이름이나 비밀번호가 일치하지 않습니다.");
+            }
+        } catch (error) {
+            console.error("Auth Error:", error);
+            alert("인증 서버 연결 오류!\n네트워크 상태를 확인하시거나 구글 시트 공유 설정('링크가 있는 모든 사용자')을 확인해주세요.");
+        } finally {
+            loginBtn.innerHTML = originalHtml;
+            loginBtn.style.pointerEvents = "auto";
+            loginBtn.style.opacity = "1";
+        }
+    }
+
+    /* --- 마스터 배포 파일 생성 --- */
+    function generateStudentFile() {
+        const bookName = document.getElementById('adminBookName').value.trim();
+        if(!bookName) { alert("교재 제목을 먼저 입력해주세요."); return; }
+        
+        let currentHtml = document.documentElement.outerHTML;
+        const dataJson = JSON.stringify(originalWordData);
+        
+        currentHtml = currentHtml.replace(/const EMBEDDED_DATA = \[\];/, `const EMBEDDED_DATA = ${dataJson};`);
+        currentHtml = currentHtml.replace(/const EMBEDDED_BOOK_NAME = "";/, `const EMBEDDED_BOOK_NAME = "${bookName}";`);
+        currentHtml = currentHtml.replace(/const IS_STUDENT_VERSION = false;/, `const IS_STUDENT_VERSION = true;`);
+
+        const blob = new Blob([currentHtml], { type: 'text/html' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `이든학습_${bookName}.html`;
+        link.click();
+        alert("학생용 배포 파일이 생성되었습니다!");
+    }
+
+    /* --- 모바일 음성 먹통 방지 (Audio Unlock) 및 영어 발음 TTS --- */
+    let isAudioUnlocked = false; 
+
+    function unlockAudio() {
+        if (isAudioUnlocked || !window.speechSynthesis) return;
+        const u = new SpeechSynthesisUtterance(' '); 
+        u.volume = 0; 
+        u.rate = 10; 
+        window.speechSynthesis.speak(u);
+        isAudioUnlocked = true;
+    }
+
+    function speak(text) { 
+        try {
+            if(!window.speechSynthesis) return;
+            window.speechSynthesis.cancel(); 
+            const u = new SpeechSynthesisUtterance(text); 
+            u.lang = 'en-US'; 
+            u.rate = 0.9; 
+            window.speechSynthesis.speak(u); 
+        } catch(e) { console.warn("TTS Error:", e); }
+    }
+
+    /* --- 구글폼 전송 로직 --- */
+    function sendDataToGoogleForm() {
+        unlockAudio(); 
+        const seat = document.getElementById('seatInput').value.trim() || localStorage.getItem('edenSeat');
+        const name = document.getElementById('nameInput').value.trim() || localStorage.getItem('edenName');
+        
+        if (!seat || !name) { alert("학생 좌석번호와 이름 정보가 없습니다."); return; }
+
+        let h = getSafeHistory();
+        
+        // 미전송 데이터를 모두 찾기
+        let unsubmittedItems = h.filter(x => x.submitted === false);
+        
+        let dataToSend = sessionData;
+        let chapterToSend = document.getElementById('chapterSelect').value;
+
+        // 미전송 건이 있다면, 가장 최근 것만 폼으로 쏘고 나머지는 모두 전송 처리하여 깔끔하게 정리
+        if (unsubmittedItems.length > 0) {
+            let latest = unsubmittedItems[unsubmittedItems.length - 1];
+            chapterToSend = latest.chapter;
+            dataToSend = latest.data;
+            
+            h.forEach(x => { x.submitted = true; });
+            localStorage.setItem('leitnerHistory', JSON.stringify(h));
+        } else {
+            if (!currentSessionId) {
+                alert("전송할 새로운 학습 기록이 없습니다.");
+                return;
+            }
+            let currIdx = h.findIndex(x => x.id === currentSessionId);
+            if (currIdx > -1) {
+                h[currIdx].submitted = true;
+                localStorage.setItem('leitnerHistory', JSON.stringify(h));
+                dataToSend = h[currIdx].data;
+                chapterToSend = h[currIdx].chapter;
+            }
+        }
+
+        const form = document.createElement("form");
+        form.action = GOOGLE_FORM_URL; form.method = "POST"; form.target = "hidden_iframe";
+        
+        const add = (n,v) => { const i = document.createElement("input"); i.type = "hidden"; i.name = n; i.value = v; form.appendChild(i); };
+        
+        add(ENTRY_IDS.seat, seat); add(ENTRY_IDS.name, name); add(ENTRY_IDS.chapter, chapterToSend);
+        add(ENTRY_IDS.time1, formatTimeKor(dataToSend.time1)); add(ENTRY_IDS.time2, formatTimeKor(dataToSend.time2));
+        add(ENTRY_IDS.time3, formatTimeKor(dataToSend.time3)); add(ENTRY_IDS.time4, formatTimeKor(dataToSend.time4));
+        
+        const wrongStr = dataToSend.wrongWords.map(w => `${w.word}|${w.meaning||""}`).join('\n') || "없음";
+        add(ENTRY_IDS.wrongWords, wrongStr);
+        
+        document.body.appendChild(form); submitted = true; form.submit();
+        alert(`[${chapterToSend}] 단원의 학습 결과가 원장님께 정상적으로 전송 중입니다.`);
+        
+        currentSessionId = null;
+        sessionData = { time1: 0, time2: 0, time3: 0, time4: 0, p3Stats: { right: 0, mid: 0, left: 0 }, wrongWords: [] };
+
+        setTimeout(() => { if (document.body.contains(form)) document.body.removeChild(form); }, 1000);
+    }
+
+    function formatTimeKor(s) { if(!s||s===0) return "0초"; let m=Math.floor(s/60); return m>0 ? `${m}분 ${s%60}초` : `${s%60}초`; }
+
+    function startRealtimeStopwatch() {
+        clearInterval(globalStopwatch);
+        document.getElementById('stopwatchDisplay').style.display = 'block';
+        globalStopwatch = setInterval(() => {
+            if (mode === 1) sessionData.time1++; else if (mode === 2) sessionData.time2++; else if (mode === 3) sessionData.time3++; else if (mode === 4) sessionData.time4++;
+            let s = [0, sessionData.time1, sessionData.time2, sessionData.time3, sessionData.time4][mode];
+            document.getElementById('stopwatchDisplay').innerText = `⏱ ${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;
+            updateSessionToStorage();
+        }, 1000);
+    }
+
+    function updateSessionToStorage() {
+        if (!currentSessionId) return;
+        let h = getSafeHistory();
+        let i = h.findIndex(x => x.id === currentSessionId);
+        if (i > -1) { h[i].data = sessionData; localStorage.setItem('leitnerHistory', JSON.stringify(h)); }
+        if (sessionData.wrongWords.length > 0) localStorage.setItem('leitnerWrongWords', JSON.stringify(sessionData.wrongWords));
+    }
+
+    /* 🔥 상단 메뉴에서 단원 셀렉트 박스 변경 시 (어떠한 제약도 없음) */
+    function handleChapterChange(e) {
+        currentSessionId = null; 
+        showStartModal(); 
+    }
+
+    /* --- 앱 초기화 및 시작 --- */
+    function initApp(m, isNew = false) {
+        unlockAudio(); 
+        
+        const selectedCh = document.getElementById('chapterSelect').value;
+        const chs = [...new Set(originalWordData.map(x=>x.chapter))];
+
+        let h = getSafeHistory();
+        let unsubmitted = h.find(x => x.submitted === false);
+        
+        // 🔥 선택지 제공: 이전 기록이 안 보내졌을 때, 무시하고 새로 시작할 것인지 묻습니다.
+        if (unsubmitted && unsubmitted.chapter !== selectedCh && chs.includes(unsubmitted.chapter)) {
+            if(confirm(`[${unsubmitted.chapter}] 단원의 학습 결과가 아직 전송되지 않았습니다.\n무시하고 [${selectedCh}] 단원을 새로 시작하시겠습니까?\n(확인을 누르면 이전 기록은 닫힙니다)`)) {
+                // 확인을 누르면 이전 기록의 잠금을 해제하고 새로운 단원을 시작하도록 처리
+                h.forEach(x => { x.submitted = true; });
+                localStorage.setItem('leitnerHistory', JSON.stringify(h));
+            } else {
+                // 취소를 누르면 원래 하던 단원으로 다시 고정
+                document.getElementById('chapterSelect').value = unsubmitted.chapter;
+                return;
+            }
+        }
+
+        mode = m;
+        isEnToKo = document.querySelector('input[name="modalLang"]:checked').value === 'en2ko';
+        document.querySelector(`input[name="topLang"][value="${isEnToKo?'en2ko':'ko2en'}"]`).checked = true;
+
+        if (!currentSessionId || isNew) {
+            currentSessionId = Date.now();
+            sessionData = { time1: 0, time2: 0, time3: 0, time4: 0, p3Stats: { right: 0, mid: 0, left: 0 }, wrongWords: [] };
+            
+            const today = new Date();
+            const dateStr = `${today.getFullYear()}.${String(today.getMonth()+1).padStart(2,'0')}.${String(today.getDate()).padStart(2,'0')} ${String(today.getHours()).padStart(2,'0')}:${String(today.getMinutes()).padStart(2,'0')}`;
+            
+            h.push({ 
+                id: currentSessionId, 
+                chapter: selectedCh, 
+                date: dateStr, 
+                data: sessionData, 
+                valid: true,
+                submitted: false 
+            });
+            localStorage.setItem('leitnerHistory', JSON.stringify(h));
+        }
+
+        activeWordData = originalWordData.filter(item => item.chapter === selectedCh);
+        if (activeWordData.length === 0) activeWordData = [...originalWordData];
+
+        pendingQueue = [...activeWordData]; 
+        boxes = { left: [], mid: [], right: [] }; 
+        if(mode === 2) currentCycle = 1;
+        
+        document.getElementById('modalOverlay').style.display = 'none';
+        
+        const titleEl = document.getElementById('modeTitle');
+        const dashEl = document.getElementById('mainDash');
+        const timerEl = document.getElementById('timerContainer');
+        const badgeEl = document.getElementById('cycleBadge');
+        const progressEl = document.getElementById('progressText');
+
+        if(mode === 1) {
+            titleEl.innerText = "1차 학습: 단어 익히기";
+            dashEl.classList.add('hidden');
+            timerEl.style.display = 'none';
+            badgeEl.style.display = 'none';
+            document.getElementById('mainArea').className = 'main-area';
+            progressEl.className = 'progress-badge badge-default';
+        } else if(mode === 2) {
+            titleEl.innerText = "2차 학습: 분류 훈련";
+            dashEl.classList.remove('hidden');
+            timerEl.style.display = 'none';
+            badgeEl.style.display = 'block';
+            badgeEl.innerText = `${currentCycle}회독`;
+            badgeEl.className = `progress-badge badge-cycle-${currentCycle}`;
+            progressEl.className = `progress-badge badge-cycle-${currentCycle}`;
+            document.getElementById('mainArea').className = `main-area cycle-${currentCycle}`;
+        } else if(mode === 3) {
+            titleEl.innerText = "3차 학습: 실전 테스트!";
+            dashEl.classList.remove('hidden');
+            timerEl.style.display = 'block';
+            badgeEl.style.display = 'block';
+            badgeEl.innerText = '최종 테스트';
+            badgeEl.className = 'progress-badge badge-cycle-3';
+            progressEl.className = 'progress-badge badge-cycle-3';
+            document.getElementById('mainArea').className = 'main-area cycle-3';
+        }
+
+        startRealtimeStopwatch(); 
+        nextCard();
+    }
+
+    function startMode4() {
+        const selectedCh = document.getElementById('chapterSelect').value;
+        const chs = [...new Set(originalWordData.map(x=>x.chapter))];
+
+        let h = getSafeHistory();
+        let unsubmitted = h.find(x => x.submitted === false);
+        
+        // 🔥 선택지 제공
+        if (unsubmitted && unsubmitted.chapter !== selectedCh && chs.includes(unsubmitted.chapter)) {
+            if(confirm(`[${unsubmitted.chapter}] 단원의 학습 결과가 아직 전송되지 않았습니다.\n무시하고 [${selectedCh}] 단원을 새로 시작하시겠습니까?\n(확인을 누르면 이전 기록은 닫힙니다)`)) {
+                h.forEach(x => { x.submitted = true; });
+                localStorage.setItem('leitnerHistory', JSON.stringify(h));
+            } else {
+                document.getElementById('chapterSelect').value = unsubmitted.chapter;
+                return;
+            }
+        }
+
+        let savedWrongs;
+        try { savedWrongs = JSON.parse(localStorage.getItem('leitnerWrongWords') || '[]'); } catch(e) { savedWrongs = []; }
+        if (!Array.isArray(savedWrongs) || savedWrongs.length === 0) { alert("저장된 오답이 없습니다. 3차 실전 테스트를 먼저 진행하세요!"); return; }
+        
+        if (!currentSessionId) {
+            currentSessionId = Date.now();
+            sessionData = { time1: 0, time2: 0, time3: 0, time4: 0, p3Stats: { right: 0, mid: 0, left: 0 }, wrongWords: [] };
+        }
+
+        mode = 4; activeWordData = [...savedWrongs]; 
+        pendingQueue = [...activeWordData]; 
+        boxes = { left: [], mid: [], right: [] }; 
+        
+        document.getElementById('modalOverlay').style.display = 'none';
+        document.getElementById('modeTitle').innerText = "4차 학습: 오답 완벽 체화";
+        document.getElementById('mainDash').classList.remove('hidden');
+        document.getElementById('timerContainer').style.display = 'none';
+        
+        const badgeEl = document.getElementById('cycleBadge');
+        badgeEl.style.display = 'block';
+        badgeEl.innerText = '오답 복습';
+        badgeEl.className = 'progress-badge badge-cycle-4';
+        document.getElementById('progressText').className = 'progress-badge badge-cycle-4';
+        document.getElementById('mainArea').className = 'main-area cycle-4';
+
+        startRealtimeStopwatch(); 
+        nextCard();
+    }
+
+    /* --- 핵심 카드 교체 로직 --- */
+    function nextCard() {
+        isFlipped = false;
+        const c = document.getElementById('wordCard'), w = document.getElementById('swipeWrapper');
+        c.style.transition = 'none'; c.classList.remove('is-flipped');
+        w.style.transition = 'none'; w.style.opacity = '1'; w.style.transform = 'translate(0,0) rotate(0)';
+        
+        document.getElementById('frontGuide').innerText = "터치하여 확인";
+        document.getElementById('backGuide').innerText = "밀어서 분류하세요";
+
+        setTimeout(() => { c.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'; w.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s'; }, 50);
+        clearInterval(timer3Sec);
+        
+        if (pendingQueue.length === 0) {
+            return showSummary();
+        }
+        currentWord = pendingQueue.shift();
+        
+        updateUI();
+        
+        if (isEnToKo) speak(currentWord.word);
+        
+        if (mode === 3) start3Timer();
+    }
+
+    /* 영어 3열 배치 및 반응형 PC UI 폰트 크기 계산 */
+    function updateUI() {
+        if (!currentWord) return;
+        const f = document.getElementById('frontText'), b = document.getElementById('backText');
+        
+        let baseMult = window.innerWidth > 768 ? 1.3 : 1.0;
+        const mult = parseFloat(document.getElementById('fontSizeLevel').value) * baseMult;
+
+        let wordText = currentWord.word || "";       
+        let meaningText = currentWord.meaning || ""; 
+
+        let meaningLines = meaningText.split(/\s*,\s*/);
+        let meaningFormatted = meaningLines.join('<br>');
+        let linesCount = meaningLines.length;
+
+        let sizeWord = 40 * mult;
+        let sizeMeaning = 38 * mult; 
+
+        let len = meaningText.length;
+        if (linesCount >= 4 || len > 40) {
+            sizeMeaning = 20 * mult;
+        } else if (linesCount === 3 || len > 20) {
+            sizeMeaning = 26 * mult;
+        } else if (linesCount === 2 || len > 10) {
+            sizeMeaning = 32 * mult;
+        }
+
+        let frontHTML = `<div style="font-size:${sizeWord}px; font-weight:900; color:#1a5f7a; line-height:1.2;">${wordText}</div>`;
+        let backHTML = `<div style="font-size:${sizeMeaning}px; font-weight:700; color:#333; word-break:keep-all; line-height:1.5;">${meaningFormatted}</div>`;
+
+        if (isEnToKo) {
+            f.innerHTML = frontHTML;
+            b.innerHTML = backHTML;
+            f.className = "word-text";
+            b.className = "word-text";
+        } else {
+            f.innerHTML = backHTML;
+            b.innerHTML = frontHTML;
+            f.className = "word-text";
+            b.className = "word-text";
+        }
+        
+        const totalCount = activeWordData.length;
+        if (mode === 1) {
+            document.getElementById('progressText').innerText = `진행: ${totalCount - pendingQueue.length} / ${totalCount}`;
+        } else {
+            document.getElementById('progressText').innerText = `완료: ${boxes.right.length} / ${totalCount}`;
+        }
+        
+        document.getElementById('cntLeft').innerText = boxes.left.length;
+        document.getElementById('cntMid').innerText = boxes.mid.length;
+        document.getElementById('cntRight').innerText = boxes.right.length;
+    }
+
+    /* --- 결산 및 라운드 재개 --- */
+    function showSummary() {
+        clearInterval(globalStopwatch); updateSessionToStorage();
+        document.getElementById('modalOverlay').style.display = 'flex';
+        const m = document.getElementById('resultModal'); m.classList.remove('hidden');
+        document.getElementById('startModal').classList.add('hidden');
+        document.getElementById('historyModal').classList.add('hidden');
+        
+        document.getElementById('resLeft').innerText = boxes.left.length;
+        document.getElementById('resMid').innerText = boxes.mid.length;
+        document.getElementById('resRight').innerText = boxes.right.length;
+        const btns = document.getElementById('resultActionBtns');
+
+        if (mode === 1) {
+            document.getElementById('resultTitle').innerText = "1차 학습 완료!";
+            document.getElementById('resultMsg').innerText = "단어를 모두 훑어보았습니다.";
+            btns.innerHTML = `<button class="btn-main btn-blue" onclick="initApp(1, false)">다시 연습하기</button><button class="btn-main btn-orange" onclick="initApp(2, false)">2차 학습 시작하기</button>`;
+        } else if (mode === 4) {
+            if (boxes.right.length === activeWordData.length) {
+                document.getElementById('resultTitle').innerText = "오답 정복 완료!"; document.getElementById('resultMsg').innerText = "틀렸던 단어를 모두 암기했습니다!";
+                btns.innerHTML = `<button class="btn-main btn-gray" onclick="showStartModal()">메뉴로 가기</button>`; localStorage.removeItem('leitnerWrongWords'); 
+            } else {
+                document.getElementById('resultTitle').innerText = "라운드 정리"; document.getElementById('resultMsg').innerText = "남은 오답 카드를 다시 훈련합니다.";
+                btns.innerHTML = `<button class="btn-main btn-blue" onclick="resumeRound()">다음 라운드 진행</button>`;
+            }
+        } else {
+            if (boxes.right.length === activeWordData.length) {
+                if (mode === 2 && currentCycle < 3) {
+                    document.getElementById('resultTitle').innerText = `${currentCycle}회독 완료!`; document.getElementById('resultMsg').innerText = `이어서 ${currentCycle + 1}회독을 진행합니다.`;
+                    btns.innerHTML = `<button class="btn-main btn-orange" onclick="startNextCycle()">다음 회독 시작</button>`;
+                } else if (mode === 2 && currentCycle === 3) {
+                    document.getElementById('resultTitle').innerText = "2차 학습 완료!"; document.getElementById('resultMsg').innerText = `모든 분류가 끝났습니다. 실전 테스트로 이동하세요.`;
+                    btns.innerHTML = `<button class="btn-main btn-green" onclick="initApp(3, false)">3차 테스트 시작</button>`;
+                } else {
+                    document.getElementById('resultTitle').innerText = "최종 테스트 통과!"; document.getElementById('resultMsg').innerHTML = `수고하셨습니다!<br>틀린 문제는 '4차 학습'에 저장되었습니다.`;
+                    btns.innerHTML = `<button class="btn-main btn-gray" onclick="showStartModal()">메뉴로 가기</button>`;
+                }
+            } else {
+                document.getElementById('resultTitle').innerText = "라운드 정리"; document.getElementById('resultMsg').innerText = "남은 카드를 다시 훈련합니다.";
+                btns.innerHTML = `<button class="btn-main btn-blue" onclick="resumeRound()">다음 라운드 진행</button>`;
+            }
+        }
+    }
+
+    function resumeRound() {
+        document.getElementById('modalOverlay').style.display = 'none';
+        pendingQueue = [...boxes.left, ...boxes.mid];
+        boxes.left = []; boxes.mid = [];
+        startRealtimeStopwatch(); nextCard();
+    }
+
+    function startNextCycle() {
+        document.getElementById('modalOverlay').style.display = 'none'; currentCycle++;
+        const badgeEl = document.getElementById('cycleBadge');
+        badgeEl.innerText = `${currentCycle}회독`; badgeEl.className = `progress-badge badge-cycle-${currentCycle}`;
+        document.getElementById('progressText').className = `progress-badge badge-cycle-${currentCycle}`;
+        document.getElementById('mainArea').className = `main-area cycle-${currentCycle}`;
+        
+        pendingQueue = [...activeWordData]; 
+        boxes = { left: [], mid: [], right: [] };
+        startRealtimeStopwatch(); nextCard();
+    }
+
+    /* ====== 엑셀(CSV) 한글 깨짐 방지 3열 파서 ====== */
+    function triggerCsvUpload() { document.getElementById('csvFileInput').click(); }
+    
+    function handleCsvUpload(ev) {
+        const f = ev.target.files[0]; if(!f) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const buffer = e.target.result;
+            const utf8Text = new TextDecoder('utf-8').decode(buffer);
+            const eucKrText = new TextDecoder('euc-kr').decode(buffer);
+            const utf8Match = (utf8Text.match(/[가-힣]/g) || []).length;
+            const eucKrMatch = (eucKrText.match(/[가-힣]/g) || []).length;
+            parseCSVText((eucKrMatch > utf8Match) ? eucKrText : utf8Text);
+        };
+        reader.readAsArrayBuffer(f);
+        ev.target.value = ''; 
+    }
+
+    function parseCSVText(text) {
+        text = text.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+        const rows = text.split('\n');
+        const data = [];
+        for(let i=0; i<rows.length; i++){
+            let row = rows[i].trim(); if(!row) continue;
+            const c = []; let curr = '', inQ = false;
+            for(let j=0; j<row.length; j++) {
+                if(row[j]==='"') inQ = !inQ; else if(row[j]===',' && !inQ) { c.push(curr); curr=''; } else curr += row[j];
+            }
+            c.push(curr);
+            
+            if(c.length >= 3){
+                let ch=c[0].trim().replace(/^"|"$/g, ''), 
+                    wo=c[1].trim().replace(/^"|"$/g, ''), 
+                    me=c.slice(2).join(',').trim().replace(/^"|"$/g, '');
+                if(i===0 && (ch.includes('단원')||wo.includes('단어'))) continue; 
+                if(ch && wo) data.push({chapter:ch, word:wo, meaning:me});
+            }
+        }
+        if(data.length>0){
+            originalWordData = data;
+            
+            let currentVal = document.getElementById('chapterSelect').value;
+            const chs = [...new Set(data.map(x=>x.chapter))];
+            const sel = document.getElementById('chapterSelect'); sel.innerHTML = '';
+            chs.forEach(x=>{ let o=document.createElement('option'); o.value=x; o.text=x; sel.appendChild(o); });
+            
+            let h = getSafeHistory();
+            let unsubmitted = h.find(x => x.submitted === false);
+            if (unsubmitted && chs.includes(unsubmitted.chapter)) {
+                sel.value = unsubmitted.chapter;
+            } else if (chs.includes(currentVal)) {
+                sel.value = currentVal;
+            }
+
+            document.getElementById('genFileBtn').disabled = false;
+            document.getElementById('genFileBtn').style.opacity = "1";
+            alert("업로드 성공! 이제 교재명을 입력하고 파일 제작 버튼을 누르세요.");
+        } else { alert("올바른 형식이 아닙니다. (단원, 단어, 뜻 3열 확인)"); }
+    }
+
+    /* --- 🔥 모달창 전환 로직 --- */
+    function resetSessionAndShowModal() { 
+        currentSessionId = null; 
+        showStartModal(); 
+    }
+
+    function showStartModal() { 
+        clearInterval(globalStopwatch);
+        document.getElementById('modalOverlay').style.display = 'flex';
+        document.getElementById('resultModal').classList.add('hidden');
+        document.getElementById('historyModal').classList.add('hidden');
+        document.getElementById('guideModal').classList.add('hidden');
+        
+        let currentVal = document.getElementById('chapterSelect').value;
+
+        // 단원 목록 세팅 
+        const chs = [...new Set(originalWordData.map(x=>x.chapter))];
+        const sel = document.getElementById('chapterSelect'); 
+        sel.innerHTML = '';
+        chs.forEach(x=>{ let o=document.createElement('option'); o.value=x; o.text=x; sel.appendChild(o); });
+        
+        // 현재 유저가 보고 있던 단원으로 부드럽게 세팅 (강제 고정 안 함)
+        if (currentVal && chs.includes(currentVal)) {
+            sel.value = currentVal;
+        }
+
+        if (IS_STUDENT_VERSION) {
+            document.getElementById('adminModal').classList.add('hidden');
+            document.getElementById('startModal').classList.remove('hidden');
+            document.getElementById('studentBookTitle').innerText = textbookName;
+            
+            if (isLoggedIn) {
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('menuSection').classList.remove('hidden');
+            } else {
+                document.getElementById('loginSection').classList.remove('hidden');
+                document.getElementById('menuSection').classList.add('hidden');
+            }
+
+        } else {
+            document.getElementById('adminModal').classList.remove('hidden');
+            document.getElementById('startModal').classList.add('hidden');
+        }
+    }
+
+    function showGuideModal() {
+        document.getElementById('startModal').classList.add('hidden');
+        document.getElementById('guideModal').classList.remove('hidden');
+    }
+    
+    function closeGuideModal() {
+        document.getElementById('guideModal').classList.add('hidden');
+        document.getElementById('startModal').classList.remove('hidden');
+    }
+
+    function showHistory() {
+        clearInterval(globalStopwatch); updateSessionToStorage();
+        document.getElementById('modalOverlay').style.display = 'flex';
+        document.getElementById('historyModal').classList.remove('hidden');
+        document.getElementById('startModal').classList.add('hidden');
+        document.getElementById('resultModal').classList.add('hidden');
+        document.getElementById('adminModal').classList.add('hidden');
+        document.getElementById('guideModal').classList.add('hidden');
+        
+        const list = document.getElementById('historyList'); list.innerHTML = '';
+        const history = getSafeHistory();
+        if (history.length === 0) { list.innerHTML = '<tr><td colspan="7" style="padding:20px;">학습 기록이 없습니다.</td></tr>'; return; }
+
+        history.reverse().forEach(r => {
+            const d = r.data, t = d.time1 + d.time2 + d.time3 + d.time4;
+            const w = d.wrongWords.map(x => `<b>${x.word}</b> | ${x.meaning || ""}`).join('<br>') || '-';
+            list.innerHTML += `<tr style="border-bottom:1px solid #eee"><td>${r.chapter}<br><span style="font-size:10px;color:#999;">${r.date.split(' ')[1]||''}</span></td><td>${formatTimeKor(d.time1)}</td><td>${formatTimeKor(d.time2)}</td><td>${formatTimeKor(d.time3)}</td><td>${formatTimeKor(d.time4)}</td><td style="font-weight:bold; color:#e74c3c;">${formatTimeKor(t)}</td><td class="wrong-words-cell">${w}</td></tr>`;
+        });
+    }
+
+    function closeHistory() { document.getElementById('historyModal').classList.add('hidden'); showStartModal(); }
+    function syncLangAndUpdate() { isEnToKo = document.querySelector('input[name="topLang"]:checked').value === 'en2ko'; document.querySelector(`input[name="modalLang"][value="${isEnToKo?'en2ko':'ko2en'}"]`).checked = true; updateUI(); }
+    function clearAllHistory() { if(confirm("모든 기록을 삭제합니다.")) { localStorage.removeItem('leitnerHistory'); localStorage.removeItem('leitnerWrongWords'); alert("초기화되었습니다."); showHistory(); } }
+    
+    function exportToCSV() {
+        let history = getSafeHistory();
+        if (history.length === 0) { alert("기록이 없습니다."); return; }
+        let csvContent = "\uFEFF학습일시,단원,1차 소요시간,2차 소요시간,3차 소요시간,4차 소요시간,총 소요시간,오답노트\n";
+        history.forEach(r => {
+            let d = r.data, t = d.time1 + d.time2 + d.time3 + d.time4, w = d.wrongWords.map(w => `${w.word}|${w.meaning || ""}`).join(' / ');
+            csvContent += `"${r.date}","${r.chapter}","${formatTimeKor(d.time1)}","${formatTimeKor(d.time2)}","${formatTimeKor(d.time3)}","${formatTimeKor(d.time4)}","${formatTimeKor(t)}","${w}"\n`;
+        });
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "학습기록.csv"; link.click();
+    }
+
+    /* --- 🔥 터치 및 마우스 제어 --- */
+    function start3Timer() {
+        let r = 3000; 
+        const b = document.getElementById('timerBar'); 
+        b.style.transition = 'none'; 
+        b.style.width = '100%';
+        setTimeout(() => { b.style.transition = 'width 3s linear'; b.style.width = '0%'; }, 50);
+        timer3Sec = setInterval(() => {
+            r -= 100; 
+            if (r <= 0) {
+                clearInterval(timer3Sec); 
+                speak("Time over"); 
+                if (!isFlipped) flipCard(); 
+                setTimeout(() => fly('left'), 1000);
+            }
+        }, 100);
+    }
+
+    const swipeWrap = document.getElementById('swipeWrapper');
+    let isDragging = false, startX = 0, startY = 0, curX = 0, curY = 0;
+    
+    swipeWrap.addEventListener('pointerdown', e => { 
+        if (isAnimating) return; 
+        isDragging = true; 
+        startX = e.clientX; 
+        startY = e.clientY; 
+        curX = 0; 
+        curY = 0;
+        swipeWrap.style.transition = 'none'; 
+        swipeWrap.style.cursor = 'grabbing';
+        swipeWrap.setPointerCapture(e.pointerId); 
+    });
+    
+    swipeWrap.addEventListener('pointermove', e => { 
+        if (!isDragging || isAnimating || (!isFlipped && mode !== 1)) return; 
+        curX = e.clientX - startX; 
+        curY = e.clientY - startY; 
+        swipeWrap.style.transform = `translate(${curX}px, ${curY}px) rotate(${curX * 0.05}deg)`; 
+    });
+    
+    swipeWrap.addEventListener('pointerup', e => {
+        if (!isDragging || isAnimating) return; 
+        isDragging = false; 
+        swipeWrap.style.cursor = 'grab';
+        swipeWrap.releasePointerCapture(e.pointerId);
+        
+        const dist = Math.hypot(curX, curY);
+        if (dist < 15) { 
+            if (!isFlipped) flipCard(); 
+            else if (mode === 1) fly('left'); 
+            return; 
+        }
+        
+        if (mode === 1) fly('left'); 
+        else if (!isFlipped) { 
+            swipeWrap.style.transition = '0.3s'; 
+            swipeWrap.style.transform = 'translate(0,0)'; 
+        }
+        else if (curX > 80) fly('right'); 
+        else if (curX < -80) fly('left'); 
+        else if (curY < -80) fly('mid'); 
+        else { 
+            swipeWrap.style.transition = '0.3s'; 
+            swipeWrap.style.transform = 'translate(0,0)'; 
+        }
+    });
+
+    function flipCard() { 
+        isFlipped = true; 
+        document.getElementById('wordCard').classList.add('is-flipped'); 
+        if (mode === 1) document.getElementById('frontGuide').innerText = "밀어서 다음 단어로";
+        
+        if (!isEnToKo) speak(currentWord.word); // 뜻->어휘 모드일 때 뒷면(영어) 발음
+    }
+    
+    function fly(dir) {
+        if (isAnimating) return;
+        isAnimating = true; 
+        clearInterval(timer3Sec);
+        
+        if (mode === 3 || mode === 4) { 
+            if (dir === 'right') sessionData.p3Stats.right++; 
+            else if (dir === 'mid') sessionData.p3Stats.mid++; 
+            else sessionData.p3Stats.left++;
+            
+            if (dir !== 'right' && !sessionData.wrongWords.some(x => x.word === currentWord.word)) {
+                sessionData.wrongWords.push({...currentWord});
+            }
+        }
+        
+        if (dir === 'right') boxes.right.push(currentWord); 
+        else if (dir === 'left') boxes.left.push(currentWord); 
+        else boxes.mid.push(currentWord); 
+        
+        swipeWrap.style.transition = 'transform 0.4s ease-out, opacity 0.3s'; 
+        swipeWrap.style.opacity = '0';
+        let tx = (dir === 'right' ? 500 : (dir === 'left' ? -500 : 0));
+        let ty = (dir === 'mid' ? -600 : 0);
+        swipeWrap.style.transform = `translate(${tx}px, ${ty}px) rotate(${tx * 0.1}deg)`;
+        
+        setTimeout(() => {
+            try { nextCard(); } catch(e) { console.error(e); } finally { isAnimating = false; }
+        }, 350);
+    }
+    
+    window.addEventListener('resize', () => { if(isFlipped || !isAnimating) updateUI(); });
+
+</script>
+
+</body></html>
